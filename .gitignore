@@ -1,0 +1,36 @@
+# Kiro 대화내용
+%programdata%
+.kiro
+
+# 테라폼 모듈 다운로드 디렉토리
+.terraform/
+.terraform.d/
+backend.tf
+
+# 테라폼 상태 파일
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.lock.hcl
+.terraformrc
+
+#Windows
+Thumbs.db
+desktop.ini
+
+# Visual Studio Code
+.vscode/
+.code-workspace
+
+# Python 가상환경
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Shell history
+.bash_history
+.zsh_history
+
+# Log file
+*.log
