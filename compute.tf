@@ -148,7 +148,11 @@ module "eks_addons" {
 
   addon = [
     { addon_name = "vpc-cni" },
-    { addon_name = "kube-proxy" }
+    { addon_name = "kube-proxy" },
+    {
+      addon_name               = "aws-ebs-csi-driver"
+      service_account_role_arn = module.ebs_csi_irsa_role.arn
+    }
   ]
 }
 
@@ -163,6 +167,7 @@ module "bastion_host" {
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
   
+  # user_data              = file("${path.module}/data/scripts/bastion-userdata.sh")
   volume_size            = local.bastion_volume_size
   volume_type            = "gp3"
   encrypted              = true
