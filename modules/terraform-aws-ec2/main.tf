@@ -28,9 +28,10 @@ resource "aws_instance" "this" {
   }
 
   metadata_options {
-    http_tokens            = var.http_tokens
-    http_endpoint          = var.http_endpoint
-    instance_metadata_tags = var.instance_metadata_tags
+    http_tokens                 = var.http_tokens
+    http_endpoint               = var.http_endpoint
+    http_put_response_hop_limit = var.http_put_response_hop_limit
+    instance_metadata_tags      = var.instance_metadata_tags
   }
 
   root_block_device {

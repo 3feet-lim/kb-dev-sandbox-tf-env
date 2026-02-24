@@ -24,7 +24,7 @@ resource "aws_iam_instance_profile" "this" {
 # 역할 권한 정책을 매핑합니다.
 ####################################################################
 resource "aws_iam_role_policy_attachment" "this" {
-  for_each = { for arn in var.policy_arns : arn => arn }
+  for_each = { for idx, arn in var.policy_arns : idx => arn }
 
   role       = aws_iam_role.this.name
   policy_arn = each.value

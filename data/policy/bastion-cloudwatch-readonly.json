@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:ListMetrics",
+        "cloudwatch:GetMetricData",
+        "cloudwatch:DescribeAlarmsForMetric",
+        "tag:GetResources",
+        "ec2:DescribeInstances",
+        "ec2:DescribeRegions",
+        "rds:DescribeDBInstances",
+        "ecs:ListClusters",
+        "ecs:ListServices",
+        "ecs:DescribeServices"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

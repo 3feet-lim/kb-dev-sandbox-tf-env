@@ -127,3 +127,9 @@ variable "instance_metadata_tags" {
   type        = string
   default     = "enabled"
 }
+
+variable "http_put_response_hop_limit" {
+  description = "HTTP PUT response hop limit"
+  type        = number
+  default     = 2
+}

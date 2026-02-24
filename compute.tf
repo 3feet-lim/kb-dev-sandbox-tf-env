@@ -164,6 +164,10 @@ module "eks_addons" {
     {
       addon_name               = "aws-ebs-csi-driver"
       service_account_role_arn = module.ebs_csi_irsa_role.arn
+    },
+    {
+      addon_name               = "amazon-cloudwatch-observability"
+      service_account_role_arn = module.cloudwatch_observability_irsa_role.arn
     }
   ]
 }
