@@ -155,7 +155,11 @@ module "eks_addons" {
   cluster_name = module.eks_cluster.name
 
   addon = [
-    { addon_name = "vpc-cni" },
+    { addon_name = "vpc-cni", configuration_values = jsonencode({
+      env = {
+        AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG = "true"
+      }
+    }) },
     { addon_name = "kube-proxy" },
     {
       addon_name               = "aws-ebs-csi-driver"
