@@ -71,6 +71,14 @@ module "eks_cluster" {
   endpoint_public_access  = true
   endpoint_private_access = true
 
+  access_entry = [
+    {
+      principal_arn = module.bastion_instance_profile.arn
+      policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      scope_type    = "cluster"
+    }
+  ]
+
   tags = {
     Name = "${local.name_prefix}-eks-cluster"
   }
@@ -166,6 +174,7 @@ module "bastion_host" {
   key_name = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
+  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
   
   # user_data              = file("${path.module}/data/scripts/bastion-userdata.sh")
   volume_size            = local.bastion_volume_size
@@ -195,6 +204,7 @@ module "test_instance" {
   key_name               = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
+  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
   
   volume_size            = local.bastion_volume_size
   volume_type            = "gp3"

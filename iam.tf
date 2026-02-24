@@ -14,3 +14,20 @@ module "ebs_csi_irsa_role" {
     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   ]
 }
+
+# Bastion 인스턴스 프로파일
+module "bastion_instance_profile" {
+  source = "./modules/terraform-aws-instance-profile"
+
+  name        = "${local.name_prefix}-bastion-profile"
+  description = "Bastion EC2 Instance Profile"
+
+  # 정책은 추후 업데이트 예정
+  policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+    "arn:aws:iam::aws:policy/AmazonEKSServicePolicy",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
+}
