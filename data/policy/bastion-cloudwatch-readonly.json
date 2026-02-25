@@ -10,11 +10,14 @@
         "cloudwatch:DescribeAlarmsForMetric",
         "tag:GetResources",
         "ec2:DescribeInstances",
+        "ec2:DescribeInstanceStatus",
         "ec2:DescribeRegions",
         "rds:DescribeDBInstances",
         "ecs:ListClusters",
         "ecs:ListServices",
-        "ecs:DescribeServices"
+        "ecs:DescribeServices",
+        "iam:ListAccountAliases",
+        "apigateway:GET"
       ],
       "Resource": "*"
     }

@@ -15,3 +15,10 @@ apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker
 
 systemctl enable docker
 systemctl start docker
+
+# AWS CLI v2 설치
+apt install -y unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+unzip -o /tmp/awscliv2.zip -d /tmp
+/tmp/aws/install --update
+rm -rf /tmp/awscliv2.zip /tmp/aws

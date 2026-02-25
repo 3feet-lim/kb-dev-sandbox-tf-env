@@ -188,7 +188,7 @@ module "bastion_host" {
   volume_size            = local.bastion_volume_size
   volume_type            = "gp3"
   encrypted              = true
-  delete_on_termination  = false
+  delete_on_termination  = true
   disable_api_termination = false
 
   tags = {
@@ -206,22 +206,23 @@ module "bastion_host" {
 module "test_instance" {
   source = "./modules/terraform-aws-ec2"
 
-  name                   = "${local.name_prefix}-test-01"
+  name                   = "${local.name_prefix}-grafana"
   ami                    = local.ubuntu_ami_id
-  instance_type          = "c7i.large"
+  instance_type          = "t3.small"
   key_name               = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
   iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
+  # user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
   
   volume_size            = local.bastion_volume_size
   volume_type            = "gp3"
   encrypted              = true
-  delete_on_termination  = false
+  delete_on_termination  = true
   disable_api_termination = false
 
   tags = {
-    Name = "${local.name_prefix}-test-01"
+    Name = "${local.name_prefix}-grafana"
     Type = "test"
     Role = "Management"
   }
@@ -232,30 +233,32 @@ module "test_instance" {
   }
 }
 
-# module "test_instance2" {
-#   source = "./modules/terraform-aws-ec2"
+module "agent_instance" {
+  source = "./modules/terraform-aws-ec2"
 
-#   name                   = "${local.name_prefix}-test-02"
-#   ami                    = local.ubuntu_ami_id
-#   instance_type          = "c7i.large"
-#   key_name               = "smlim"
-#   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id  # dmz-subnet-01
-#   vpc_security_group_ids = [module.bastion_security_group.id]
+  name                   = "${local.name_prefix}-ai-agent"
+  ami                    = local.ubuntu_ami_id
+  instance_type          = "t3.medium"
+  key_name               = "smlim"
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
+  vpc_security_group_ids = [module.bastion_security_group.id]
+  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
+  user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
   
-#   volume_size            = local.bastion_volume_size
-#   volume_type            = "gp3"
-#   encrypted              = true
-#   delete_on_termination  = false
-#   disable_api_termination = false
+  volume_size            = local.bastion_volume_size
+  volume_type            = "gp3"
+  encrypted              = true
+  delete_on_termination  = true
+  disable_api_termination = false
 
-#   tags = {
-#     Name = "${local.name_prefix}-test-02"
-#     Type = "test"
-#     Role = "Management"
-#   }
+  tags = {
+    Name = "${local.name_prefix}-ai-agent"
+    Type = "test"
+    Role = "Management"
+  }
 
-#   volume_tags = {
-#     Name = "${local.name_prefix}-test-02-root"
-#     Type = "test"
-#   }
-# }
+  volume_tags = {
+    Name = "${local.name_prefix}-ai-agent-volume"
+    Type = "test"
+  }
+}
