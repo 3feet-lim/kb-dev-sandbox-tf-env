@@ -24,6 +24,15 @@ module "bastion_cloudwatch_readonly_policy" {
   policy      = file("${path.module}/data/policy/bastion-cloudwatch-readonly.json")
 }
 
+# Bastion FIS 정책
+module "bastion_fis_policy" {
+  source = "./modules/terraform-aws-iam-policy"
+
+  name        = "${local.name_prefix}-bastion-fis-access"
+  description = "FIS full access for Bastion"
+  policy      = file("${path.module}/data/policy/bastion-fis-access.json")
+}
+
 # Bastion 인스턴스 프로파일
 module "bastion_instance_profile" {
   source = "./modules/terraform-aws-instance-profile"
@@ -38,7 +47,8 @@ module "bastion_instance_profile" {
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
-    module.bastion_cloudwatch_readonly_policy.arn
+    module.bastion_cloudwatch_readonly_policy.arn,
+    module.bastion_fis_policy.arn
   ]
 }
 
