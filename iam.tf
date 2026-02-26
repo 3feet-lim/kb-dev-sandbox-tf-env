@@ -47,6 +47,7 @@ module "bastion_instance_profile" {
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+    "arn:aws:iam::aws:policy/IAMFullAccess",
     module.bastion_cloudwatch_readonly_policy.arn,
     module.bastion_fis_policy.arn
   ]

@@ -132,9 +132,9 @@ module "eks_nodegroup" {
     module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-02"].id  # app-subnet-02
   ]
 
-  desired_size = local.node_desired_size
-  min_size     = local.node_min_size
-  max_size     = local.node_max_size
+  desired_size = 1
+  min_size     = 1
+  max_size     = 5
 
   update_config = {
     max_unavailable_percentage = 50
@@ -158,6 +158,7 @@ module "eks_addons" {
     { addon_name = "vpc-cni", configuration_values = jsonencode({
       env = {
         AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG = "true"
+        ENI_CONFIG_LABEL_DEF               = "topology.kubernetes.io/zone"
       }
     }) },
     { addon_name = "kube-proxy" },

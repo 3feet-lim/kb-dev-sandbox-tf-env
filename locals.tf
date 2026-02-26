@@ -15,9 +15,6 @@ locals {
   eks_version           = "1.33"
   node_instance_type    = "t3.micro"
   node_ami_id          = "ami-0038c2af290cc3fe7"
-  node_desired_size    = 1
-  node_min_size        = 1
-  node_max_size        = 5
   
   # Bastion 설정
   bastion_ami_id       = "ami-00ba84400fe884666"
