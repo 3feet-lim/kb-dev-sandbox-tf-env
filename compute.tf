@@ -263,3 +263,34 @@ module "agent_instance" {
     Type = "test"
   }
 }
+
+# Private AI Agent (폐쇄망 - app-subnet)
+module "private_agent_instance" {
+  source = "./modules/terraform-aws-ec2"
+
+  name                   = "${local.name_prefix}-private-ai-agent"
+  ami                    = local.ubuntu_ami_id
+  instance_type          = "t3.small"
+  key_name               = "smlim"
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id  # app-subnet-01 (프라이빗)
+  vpc_security_group_ids = [module.bastion_security_group.id]
+  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
+  user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
+
+  volume_size            = local.bastion_volume_size
+  volume_type            = "gp3"
+  encrypted              = true
+  delete_on_termination  = true
+  disable_api_termination = false
+
+  tags = {
+    Name = "${local.name_prefix}-private-ai-agent"
+    Type = "test"
+    Role = "Management"
+  }
+
+  volume_tags = {
+    Name = "${local.name_prefix}-private-ai-agent-volume"
+    Type = "test"
+  }
+}
