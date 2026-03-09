@@ -80,3 +80,25 @@ resource "aws_vpc_security_group_ingress_rule" "nodegroup_kubelet_from_cluster" 
 
   depends_on = [module.eks_cluster_security_group, module.eks_nodegroup_security_group]
 }
+
+# VPC Endpoint Security Group
+module "vpce_security_group" {
+  source = "./modules/terraform-aws-security-group"
+
+  name        = "${local.name_prefix}-vpce-sg"
+  vpc_id      = module.vpc_core.id
+  description = "Security group for VPC endpoints"
+
+  ingress = {
+    https-from-vpc = { from_port = "443", to_port = "443", ip_protocol = "tcp", cidr_ipv4 = local.vpc_cidr, description = "HTTPS from VPC" }
+  }
+
+  egress = {
+    all-outbound = { from_port = "0", to_port = "0", ip_protocol = "-1", cidr_ipv4 = "0.0.0.0/0", description = "All outbound traffic" }
+  }
+
+  tags = {
+    Name = "${local.name_prefix}-vpce-sg"
+    Type = "VPC-Endpoint"
+  }
+}

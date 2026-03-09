@@ -161,13 +161,6 @@ module "app_route_table" {
     module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-02"].id  # app-subnet-02
   ]
 
-  routes = [
-    {
-      destination_cidr_block = "0.0.0.0/0"
-      nat_gateway_id         = module.nat_gateway.natgateways["${local.name_prefix}-nat-gateway-01"].id
-    }
-  ]
-
   tags = {
     Name = "${local.name_prefix}-app-rt"
     Type = "APP"
@@ -235,7 +228,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-logs-interface-endpoint"
     },
     {
@@ -244,7 +237,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-monitoring-interface-endpoint"
     },
     {
@@ -253,7 +246,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-bedrock-interface-endpoint"
     },
     {
@@ -262,7 +255,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-s3-interface-endpoint"
     },
     {
@@ -271,7 +264,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-ec2-interface-endpoint"
     },
     {
@@ -280,7 +273,7 @@ module "vpc_endpoint" {
       subnet_ids = [
         module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
       ]
-      security_group_ids = [module.bastion_security_group.id]
+      security_group_ids = [module.vpce_security_group.id]
       vpce_name = "${local.name_prefix}-eks-interface-endpoint"
     },
   ]

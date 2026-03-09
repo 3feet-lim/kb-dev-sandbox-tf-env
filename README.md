@@ -132,8 +132,12 @@ terraform-infra-dev/grafana_dashboard/
   - APP subnets (private): 100.71.0.64/27, 100.71.0.96/27
   - DB subnets (private): 100.71.0.128/27, 100.71.0.160/27
   - POD subnets (private): 100.64.0.0/24, 100.64.1.0/24
-- **NAT Gateway**: In DMZ subnet for private subnet internet access
+- **NAT Gateway**: In DMZ subnet (POD subnet 아웃바운드용)
 - **Route Tables**: Separate route tables for each subnet type
+  - DMZ RT: IGW를 통한 인터넷 접근
+  - APP RT: 라우트 없음 (완전 폐쇄망, VPC Endpoint만 사용)
+  - DB RT: 라우트 없음
+  - POD RT: NAT Gateway를 통한 아웃바운드 인터넷 접근
 
 #### Compute Layer
 - **EKS Cluster**: Version 1.33 in APP subnets
@@ -150,7 +154,8 @@ terraform-infra-dev/grafana_dashboard/
   - user_data 스크립트를 통한 초기 설정
 - **Private AI Agent Instance**: t3.small Ubuntu instance in APP subnet (폐쇄망)
   - IGW가 연결되지 않은 프라이빗 서브넷(app-subnet-01)에 배치
-  - 외부 직접 접근 차단, NAT Gateway를 통한 아웃바운드만 허용
+  - 외부 직접 접근 차단, 아웃바운드 인터넷 접근 불가 (완전 폐쇄망)
+  - VPC Endpoint를 통한 AWS 서비스 접근만 가능
   - user_data 스크립트를 통한 초기 설정
 
 ### Configuration
@@ -192,7 +197,17 @@ All resources are automatically tagged using AWS provider default tags:
   - **Bastion SG**: SSH access (port 22) from configurable CIDR
   - **EKS Cluster SG**: HTTPS (port 443) from node group and bastion, Kubelet API (1025-65535) to node group
   - **EKS Node Group SG**: Kubelet API from cluster, SSH from bastion, inter-node communication
+  - **VPC Endpoint SG**: HTTPS (port 443) from VPC CIDR, VPC Endpoint 전용 보안 그룹
   - **Cross-references**: Security groups reference each other for secure communication
+- **VPC Endpoints**:
+  - S3 Gateway Endpoint
+  - S3 Interface Endpoint
+  - CloudWatch Logs Interface Endpoint
+  - CloudWatch Monitoring Interface Endpoint
+  - Bedrock Runtime Interface Endpoint
+  - EC2 Interface Endpoint
+  - EKS Interface Endpoint
+  - 모든 Interface Endpoint는 app-subnet-01에 배치, VPC Endpoint SG 적용
 
 ### Maintenance
 
