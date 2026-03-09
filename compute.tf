@@ -239,7 +239,7 @@ module "agent_instance" {
 
   name                   = "${local.name_prefix}-ai-agent"
   ami                    = local.ubuntu_ami_id
-  instance_type          = "t3.medium"
+  instance_type          = "t3.small"
   key_name               = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]

@@ -150,7 +150,7 @@ terraform-infra-dev/grafana_dashboard/
   - Pre-installed tools: AWS CLI, kubectl, eksctl
   - SSH access from configurable CIDR range
 - **Grafana Instance**: t3.small Ubuntu instance in DMZ subnet
-- **AI Agent Instance**: t3.medium Ubuntu instance in DMZ subnet (공개망)
+- **AI Agent Instance**: t3.small Ubuntu instance in DMZ subnet (공개망)
   - user_data 스크립트를 통한 초기 설정
 - **Private AI Agent Instance**: t3.small Ubuntu instance in APP subnet (폐쇄망)
   - IGW가 연결되지 않은 프라이빗 서브넷(app-subnet-01)에 배치
