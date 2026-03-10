@@ -207,6 +207,7 @@ All resources are automatically tagged using AWS provider default tags:
   - Bedrock Runtime Interface Endpoint
   - EC2 Interface Endpoint
   - EKS Interface Endpoint
+  - STS Interface Endpoint
   - 모든 Interface Endpoint는 app-subnet-01에 배치, VPC Endpoint SG 적용
 
 ### Maintenance
