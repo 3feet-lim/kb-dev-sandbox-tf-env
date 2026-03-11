@@ -292,6 +292,24 @@ module "vpc_endpoint" {
       security_group_ids = [module.vpce_security_group.id]
       vpce_name          = "${local.name_prefix}-sts-interface-endpoint"
     },
+    {
+      service_name      = "com.amazonaws.ap-northeast-2.ecr.api"
+      vpc_endpoint_type = "Interface"
+      subnet_ids = [
+        module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
+      ]
+      security_group_ids = [module.vpce_security_group.id]
+      vpce_name          = "${local.name_prefix}-ecr-api-interface-endpoint"
+    },
+    {
+      service_name      = "com.amazonaws.ap-northeast-2.ecr.dkr"
+      vpc_endpoint_type = "Interface"
+      subnet_ids = [
+        module.subnets.subnets["${local.name_prefix}-app-subnet-01"].id
+      ]
+      security_group_ids = [module.vpce_security_group.id]
+      vpce_name          = "${local.name_prefix}-ecr-dkr-interface-endpoint"
+    },
   ]
 }
 

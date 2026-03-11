@@ -207,7 +207,7 @@ All resources are automatically tagged using AWS provider default tags:
   - **Bastion SG**: SSH access (port 22) from configurable CIDR
   - **EKS Cluster SG**: HTTPS (port 443) from node group and bastion, Kubelet API (1025-65535) to node group
   - **EKS Node Group SG**: Kubelet API from cluster, SSH from bastion, inter-node communication
-  - **VPC Endpoint SG**: HTTPS (port 443) from VPC CIDR, VPC Endpoint 전용 보안 그룹
+  - **VPC Endpoint SG**: HTTPS (port 443) from VPC primary CIDR 및 secondary CIDR (POD), VPC Endpoint 전용 보안 그룹
   - **Cross-references**: Security groups reference each other for secure communication
 - **VPC Endpoints**:
   - S3 Gateway Endpoint

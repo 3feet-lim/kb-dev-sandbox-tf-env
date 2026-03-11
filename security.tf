@@ -90,7 +90,8 @@ module "vpce_security_group" {
   description = "Security group for VPC endpoints"
 
   ingress = {
-    https-from-vpc = { from_port = "443", to_port = "443", ip_protocol = "tcp", cidr_ipv4 = local.vpc_cidr, description = "HTTPS from VPC" }
+    https-from-vpc           = { from_port = "443", to_port = "443", ip_protocol = "tcp", cidr_ipv4 = local.vpc_cidr, description = "HTTPS from VPC primary CIDR" }
+    https-from-secondary-vpc = { from_port = "443", to_port = "443", ip_protocol = "tcp", cidr_ipv4 = local.secondary_cidr[0], description = "HTTPS from VPC secondary CIDR (POD)" }
   }
 
   egress = {
