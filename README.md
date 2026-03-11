@@ -135,9 +135,10 @@ terraform-infra-dev/grafana_dashboard/
 - **NAT Gateway**: In DMZ subnet (POD subnet 아웃바운드용)
 - **Route Tables**: Separate route tables for each subnet type
   - DMZ RT: IGW를 통한 인터넷 접근
-  - APP RT: 라우트 없음 (완전 폐쇄망, VPC Endpoint만 사용)
+  - APP RT: Transit Gateway를 통한 100.72.0.0/22 대역 라우팅
   - DB RT: 라우트 없음
   - POD RT: NAT Gateway를 통한 아웃바운드 인터넷 접근
+- **Transit Gateway Attachment**: DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)을 통해 Transit Gateway에 연결
 
 #### Compute Layer
 - **EKS Cluster**: Version 1.33 in APP subnets
@@ -154,9 +155,18 @@ terraform-infra-dev/grafana_dashboard/
   - user_data 스크립트를 통한 초기 설정
 - **Private AI Agent Instance**: t3.small Ubuntu instance in APP subnet (폐쇄망)
   - IGW가 연결되지 않은 프라이빗 서브넷(app-subnet-01)에 배치
-  - 외부 직접 접근 차단, 아웃바운드 인터넷 접근 불가 (완전 폐쇄망)
-  - VPC Endpoint를 통한 AWS 서비스 접근만 가능
+  - 외부 직접 접근 차단, 인터넷 직접 접근 불가
+  - VPC Endpoint를 통한 AWS 서비스 접근 및 Transit Gateway를 통한 100.72.0.0/22 대역 통신 가능
   - user_data 스크립트를 통한 초기 설정
+
+#### Load Balancer
+- **Private Agent NLB**: Internet-facing Network Load Balancer
+  - DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)에 배치
+  - TCP 443 포트 리스너
+  - 삭제 보호 비활성화
+- **Private Agent Target Group**: NLB 타겟 그룹
+  - TCP 3000 포트, instance 타입
+  - Private AI Agent Instance를 타겟으로 등록
 
 ### Configuration
 

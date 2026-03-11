@@ -20,7 +20,7 @@ resource "aws_lb" "this" {
     for_each = var.subnet_mappings != null ? var.subnet_mappings : {}
     content {
       subnet_id = subnet_mapping.key
-      private_ip = subnet_mapping.value
+      private_ipv4_address = subnet_mapping.value
     }
   }
 

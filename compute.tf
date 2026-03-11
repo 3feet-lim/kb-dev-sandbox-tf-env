@@ -123,9 +123,9 @@ module "eks_launch_template" {
 module "eks_nodegroup" {
   source = "./modules/terraform-aws-eks-ng"
 
-  cluster_name      = module.eks_cluster.name
-  node_group_name   = "${local.name_prefix}-eks-nodegroup-01"
-  node_role_arn     = module.eks_nodegroup_role.arn
+  cluster_name    = module.eks_cluster.name
+  node_group_name = "${local.name_prefix}-eks-nodegroup-01"
+  node_role_arn   = module.eks_nodegroup_role.arn
 
   subnet_ids = [
     module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id, # app-subnet-01
@@ -180,16 +180,16 @@ module "bastion_host" {
   name                   = "${local.name_prefix}-bastion-01"
   ami                    = local.bastion_ami_id
   instance_type          = local.bastion_instance_type
-  key_name = "smlim"
-  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
+  key_name               = "smlim"
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
   iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
-  
+
   # user_data              = file("${path.module}/data/scripts/bastion-userdata.sh")
-  volume_size            = local.bastion_volume_size
-  volume_type            = "gp3"
-  encrypted              = true
-  delete_on_termination  = true
+  volume_size             = local.bastion_volume_size
+  volume_type             = "gp3"
+  encrypted               = true
+  delete_on_termination   = true
   disable_api_termination = false
 
   tags = {
@@ -211,15 +211,15 @@ module "test_instance" {
   ami                    = local.ubuntu_ami_id
   instance_type          = "t3.small"
   key_name               = "smlim"
-  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
   iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
   # user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
-  
-  volume_size            = local.bastion_volume_size
-  volume_type            = "gp3"
-  encrypted              = true
-  delete_on_termination  = true
+
+  volume_size             = local.bastion_volume_size
+  volume_type             = "gp3"
+  encrypted               = true
+  delete_on_termination   = true
   disable_api_termination = false
 
   tags = {
@@ -241,15 +241,15 @@ module "agent_instance" {
   ami                    = local.ubuntu_ami_id
   instance_type          = "t3.small"
   key_name               = "smlim"
-  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id  # dmz-subnet-01
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
   iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
   user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
-  
-  volume_size            = local.bastion_volume_size
-  volume_type            = "gp3"
-  encrypted              = true
-  delete_on_termination  = true
+
+  volume_size             = local.bastion_volume_size
+  volume_type             = "gp3"
+  encrypted               = true
+  delete_on_termination   = true
   disable_api_termination = false
 
   tags = {
@@ -272,15 +272,15 @@ module "private_agent_instance" {
   ami                    = local.ubuntu_ami_id
   instance_type          = "t3.small"
   key_name               = "smlim"
-  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id  # app-subnet-01 (프라이빗)
+  subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id # app-subnet-01 (프라이빗)
   vpc_security_group_ids = [module.bastion_security_group.id]
   iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
   user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
 
-  volume_size            = local.bastion_volume_size
-  volume_type            = "gp3"
-  encrypted              = true
-  delete_on_termination  = true
+  volume_size             = local.bastion_volume_size
+  volume_type             = "gp3"
+  encrypted               = true
+  delete_on_termination   = true
   disable_api_termination = false
 
   tags = {
