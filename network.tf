@@ -165,6 +165,10 @@ module "app_route_table" {
     {
       destination_cidr_block = "100.72.0.0/22"
       transit_gateway_id     = local.tgw_id
+    },
+    {
+      destination_cidr_block = "100.71.64.0/22"
+      transit_gateway_id     = local.tgw_id
     }
   ]
 

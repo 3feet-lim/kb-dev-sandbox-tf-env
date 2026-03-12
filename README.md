@@ -135,7 +135,7 @@ terraform-infra-dev/grafana_dashboard/
 - **NAT Gateway**: In DMZ subnet (POD subnet 아웃바운드용)
 - **Route Tables**: Separate route tables for each subnet type
   - DMZ RT: IGW를 통한 인터넷 접근
-  - APP RT: Transit Gateway를 통한 100.72.0.0/22 대역 라우팅
+  - APP RT: Transit Gateway를 통한 100.72.0.0/22 및 100.71.64.0/22 대역 라우팅
   - DB RT: 라우트 없음
   - POD RT: NAT Gateway를 통한 아웃바운드 인터넷 접근
 - **Transit Gateway Attachment**: DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)을 통해 Transit Gateway에 연결
