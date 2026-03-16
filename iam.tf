@@ -72,3 +72,16 @@ module "cloudwatch_observability_irsa_role" {
     "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
   ]
 }
+
+# AI Agent 인스턴스 프로파일
+module "ai_agent_instance_profile" {
+  source = "./modules/terraform-aws-instance-profile"
+
+  name        = "${local.name_prefix}-ai-agent-profile"
+  description = "AI Agent EC2 Instance Profile"
+
+  policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  ]
+}

@@ -163,6 +163,10 @@ module "app_route_table" {
 
   routes = [
     {
+      destination_cidr_block = "0.0.0.0/0"
+      nat_gateway_id         = module.nat_gateway.natgateways["${local.name_prefix}-nat-gateway-01"].id
+    },
+    {
       destination_cidr_block = "100.72.0.0/22"
       transit_gateway_id     = local.tgw_id
     },

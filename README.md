@@ -135,7 +135,7 @@ terraform-infra-dev/grafana_dashboard/
 - **NAT Gateway**: In DMZ subnet (POD subnet 아웃바운드용)
 - **Route Tables**: Separate route tables for each subnet type
   - DMZ RT: IGW를 통한 인터넷 접근
-  - APP RT: Transit Gateway를 통한 100.72.0.0/22 및 100.71.64.0/22 대역 라우팅
+  - APP RT: NAT Gateway를 통한 아웃바운드 인터넷 접근, Transit Gateway를 통한 100.72.0.0/22 및 100.71.64.0/22 대역 라우팅
   - DB RT: 라우트 없음
   - POD RT: NAT Gateway를 통한 아웃바운드 인터넷 접근
 - **Transit Gateway Attachment**: DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)을 통해 Transit Gateway에 연결
@@ -145,17 +145,19 @@ terraform-infra-dev/grafana_dashboard/
 - **EKS Node Group**: Single node group with t3.micro instances
 - **Launch Template**: Custom launch template with specified AMI
 - **IAM Roles**: Properly configured roles for cluster and node groups
+- **AI Agent Instance Profile**: AI Agent 전용 인스턴스 프로파일 (AmazonSSMManagedInstanceCore, ReadOnlyAccess 정책 포함, SSM을 통한 원격 접속 및 AWS 리소스 읽기 전용 접근 지원)
 - **EKS Addons**: vpc-cni, kube-proxy, aws-ebs-csi-driver, amazon-cloudwatch-observability
 - **Bastion Host**: t3.micro instance in DMZ subnet for secure access
   - Root volume: 30GB gp3 encrypted
   - Pre-installed tools: AWS CLI, kubectl, eksctl
   - SSH access from configurable CIDR range
 - **Grafana Instance**: t3.small Ubuntu instance in DMZ subnet
-- **AI Agent Instance**: t3.small Ubuntu instance in DMZ subnet (공개망)
+- **AI Agent Instance**: t3.medium Ubuntu instance in DMZ subnet (공개망)
   - user_data 스크립트를 통한 초기 설정
 - **Private AI Agent Instance**: t3.small Ubuntu instance in APP subnet (폐쇄망)
   - IGW가 연결되지 않은 프라이빗 서브넷(app-subnet-01)에 배치
   - 외부 직접 접근 차단, 인터넷 직접 접근 불가
+  - AI Agent 전용 인스턴스 프로파일 사용 (AmazonSSMManagedInstanceCore, ReadOnlyAccess 정책)
   - VPC Endpoint를 통한 AWS 서비스 접근 및 Transit Gateway를 통한 100.72.0.0/22 대역 통신 가능
   - user_data 스크립트를 통한 초기 설정
 

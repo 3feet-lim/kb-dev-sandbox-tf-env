@@ -239,11 +239,11 @@ module "agent_instance" {
 
   name                   = "${local.name_prefix}-ai-agent"
   ami                    = local.ubuntu_ami_id
-  instance_type          = "t3.small"
+  instance_type          = "t3.medium"
   key_name               = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id # dmz-subnet-01
   vpc_security_group_ids = [module.bastion_security_group.id]
-  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
+  iam_instance_profile   = module.ai_agent_instance_profile.instance_profile_name
   user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
 
   volume_size             = local.bastion_volume_size
@@ -274,7 +274,7 @@ module "private_agent_instance" {
   key_name               = "smlim"
   subnet_id              = module.subnets.subnets["kb0-smlim-grafana-dev-app-subnet-01"].id # app-subnet-01 (프라이빗)
   vpc_security_group_ids = [module.bastion_security_group.id]
-  iam_instance_profile   = module.bastion_instance_profile.instance_profile_name
+  iam_instance_profile   = module.ai_agent_instance_profile.instance_profile_name
   user_data              = file("${path.module}/data/scripts/ubuntu-userdata.sh")
 
   volume_size             = local.bastion_volume_size
