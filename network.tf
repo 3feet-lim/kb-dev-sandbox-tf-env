@@ -386,3 +386,52 @@ module "private_agent_nlb" {
     Name = "${local.name_prefix}-prv-agent-nlb"
   }
 }
+
+# Public Agent NLB 타겟 그룹
+module "public_agent_tg" {
+  source = "./modules/terraform-aws-tg-nlb"
+
+  name        = "${local.name_prefix}-pub-ag-tg"
+  vpc_id      = module.vpc_core.id
+  protocol    = "TCP"
+  port        = 3000
+  target_type = "instance"
+
+  targets = [
+    { id = module.agent_instance.id }
+  ]
+
+  tags = {
+    Name = "${local.name_prefix}-pub-agent-tg"
+  }
+}
+
+# Public Agent NLB (internet-facing)
+module "public_agent_nlb" {
+  source = "./modules/terraform-aws-nlb"
+
+  name     = "${local.name_prefix}-pub-ag-nlb"
+  internal = false
+
+  subnets = [
+    module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-01"].id,
+    module.subnets.subnets["kb0-smlim-grafana-dev-dmz-subnet-02"].id
+  ]
+
+  security_groups = [module.bastion_security_group.id]
+
+  enable_deletion_protection = false
+  access_log_enabled         = false
+
+  listeners = [
+    {
+      port             = 80
+      protocol         = "TCP"
+      target_group_arn = module.public_agent_tg.arn
+    }
+  ]
+
+  tags = {
+    Name = "${local.name_prefix}-pub-agent-nlb"
+  }
+}

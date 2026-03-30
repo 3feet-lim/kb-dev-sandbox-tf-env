@@ -164,11 +164,18 @@ terraform-infra-dev/grafana_dashboard/
 #### Load Balancer
 - **Private Agent NLB**: Internet-facing Network Load Balancer
   - DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)에 배치
-  - TCP 443 포트 리스너
+  - TCP 80 포트 리스너
   - 삭제 보호 비활성화
 - **Private Agent Target Group**: NLB 타겟 그룹
   - TCP 3000 포트, instance 타입
   - Private AI Agent Instance를 타겟으로 등록
+- **Public Agent NLB**: Internet-facing Network Load Balancer
+  - DMZ 서브넷(dmz-subnet-01, dmz-subnet-02)에 배치
+  - TCP 80 포트 리스너
+  - 삭제 보호 비활성화
+- **Public Agent Target Group**: NLB 타겟 그룹
+  - TCP 3000 포트, instance 타입
+  - Public AI Agent Instance(agent_instance)를 타겟으로 등록
 
 ### Configuration
 
